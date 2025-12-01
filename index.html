@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IDV Assignment 5 – Integrated A1–A4</title>
+
+  <!-- Global styles for Assignment 5 -->
+  <style>
+    :root {
+      --bg-page: #0b1120;
+      --bg-card: #111827;
+      --bg-card-alt: #020617;
+      --fg-main: #e5e7eb;
+      --fg-muted: #9ca3af;
+      --accent: #60a5fa;
+      --border-subtle: #1f2937;
+      --border-strong: #4b5563;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+        Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
+      color: var(--fg-main);
+      line-height: 1.6;
+      overflow-x: hidden; /* prevent horizontal scrollbar, per Assignment 5 */
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+    }
+
+    .site-header {
+      padding: 16px 20px 20px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(37, 99, 235, 0.18), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+      margin-bottom: 18px;
+    }
+
+    .site-header h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+      letter-spacing: 0.02em;
+    }
+
+    .site-header p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    .toc-card {
+      margin-top: 16px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      padding: 14px 16px 10px;
+      font-size: 14px;
+    }
+
+    .toc-card strong {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--fg-muted);
+    }
+
+    .toc-card ul {
+      list-style: none;
+      margin: 8px 0 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+    }
+
+    .toc-card li a {
+      font-size: 14px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.7);
+    }
+
+    main {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    section {
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 18px 18px 20px;
+    }
+
+    section h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    section p {
+      margin-top: 4px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    .section-note {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin-bottom: 12px;
+    }
+
+    /* --- Assignment 1 styles (adapted from A1) ----------------------- */
+    header.assignment1-header {
+      background: linear-gradient(to right, #1f2937, #020617);
+      padding: 14px 18px;
+      border-bottom: 1px solid #1f2937;
+      border-radius: 12px 12px 0 0;
+    }
+
+    header.assignment1-header h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      color: #f9fafb;
+    }
+
+    header.assignment1-header p {
+      margin: 0;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .psi-main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 16px 10px 4px;
+    }
+
+    .psi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .psi-card {
+      flex: 1 1 260px;
+      background: radial-gradient(circle at top left, #111827 0, #020617 55%);
+      border-radius: 14px;
+      padding: 14px 14px 12px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(75, 85, 99, 0.9);
+    }
+
+    .psi-card h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+
+    .psi-card p {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .psi-card button {
+      font-size: 13px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      background: #111827;
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+
+    .psi-card button:hover {
+      border-color: #60a5fa;
+    }
+
+    .psi-card pre {
+      background: #020617;
+      border-radius: 10px;
+      border: 1px solid #1f2937;
+      padding: 6px 8px;
+      font-size: 12px;
+      overflow: auto;
+      color: #e5e7eb;
+    }
+
+    .psi-table-wrapper {
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .psi-table-wrapper table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    .psi-table-wrapper th,
+    .psi-table-wrapper td {
+      border-bottom: 1px solid #1f2937;
+      padding: 4px 6px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .psi-table-wrapper thead {
+      background: #111827;
+    }
+
+    .psi-table-wrapper tbody tr:nth-child(even) {
+      background: #020617;
+    }
+
+    .psi-table-wrapper tbody tr:nth-child(odd) {
+      background: #020617;
+    }
+
+    /* --- Assignment 2 styles (copied & slightly adapted) ------------- */
+    .a2-table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1100px;
+      background: #020617;
+      table-layout: fixed;
+      margin-top: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .a2-table col {
+      width: 20%;
+    }
+
+    .a2-table thead th {
+      font-weight: 700;
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 10px;
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+
+    .a2-table td {
+      border: 1px solid #1f2937;
+      text-align: center;
+      padding: 10px;
+      vertical-align: middle;
+      color: #e5e7eb;
+      font-size: 12px;
+    }
+
+    .a2-table svg {
+      width: 96px;
+      height: 96px;
+      display: block;
+      margin: auto;
+      overflow: visible;
+    }
+
+    .mirror { transform: scaleX(-1); }
+    .rotate180 { transform: rotate(180deg); }
+    .squeeze { transform: scaleY(0.5); }
+    .gray { filter: grayscale(100%); }
+
+    .c1{fill:#4285F4;stroke:#1b54c8;stroke-width:2}
+    .c2{fill:#34A853;stroke:#1e6c39;stroke-width:2}
+    .c3{fill:#EA4335;stroke:#9a1c12;stroke-width:2}
+    .c4{fill:#FBBC05;stroke:#b98500;stroke-width:2}
+    .c5{fill:#7E57C2;stroke:#4e2e8e;stroke-width:2}
+    .c6{fill:#00ACC1;stroke:#006773;stroke-width:2}
+    .line{fill:none;stroke-width:3;stroke:#e5e7eb}
+
+    /* --- Assignment 3 styles (from A3, minus its own body rule) ------ */
+    .a3 h3 {
+      font-size: 18px;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
+
+    .a3 h4 {
+      font-size: 16px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    .chart {
+      display: block;
+      max-width: 900px;
+      width: 100%;
+      border: 1px solid #1f2937;
+      background: #020617;
+    }
+
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      padding: 4px 8px;
+      background:#0b1120;
+      border:1px solid #4b5563;
+      font-size:12px;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px #000000aa;
+      color: #e5e7eb;
+    }
+
+    figure {
+      margin: 12px 0 6px;
+    }
+
+    figcaption {
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    figcaption strong {
+      color: #e5e7eb;
+    }
+
+    .divider {
+      margin: 24px 0;
+      border: none;
+      border-top: 1px solid #1f2937;
+    }
+
+    /* --- Assignment 4 styles (from A4, minus its own body rule) ------ */
+    .a4 h3 {
+      font-size: 18px;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
+
+    .a4 p {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .controls {
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .controls span {
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    button.metric-btn,
+    button.dataset-btn {
+      border: 1px solid #4b5563;
+      background: #020617;
+      padding: 4px 10px;
+      margin-right: 6px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    button.metric-btn.active,
+    button.dataset-btn.active {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    #summary {
+      margin-top: 14px;
+      font-size: 13px;
+      background: #020617;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #1f2937;
+      max-width: 880px;
+    }
+
+    #summary h3 {
+      margin: 0 0 4px 0;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    #summary ul {
+      margin: 4px 0 0 16px;
+      padding: 0;
+      color: #9ca3af;
+    }
+
+    /* Simple responsive tweak */
+    @media (max-width: 768px) {
+      .site-shell {
+        padding: 16px 12px 28px;
+      }
+      .chart {
+        max-width: 100%;
+      }
+    }
+
+    /* --- Overrides: switch to white background and neutral tables --- */
+    :root {
+      --bg-page: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-alt: #ffffff;
+      --fg-main: #111111;
+      --fg-muted: #555555;
+      --accent: #0b62c1;
+      --border-subtle: #e0e0e0;
+      --border-strong: #cccccc;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--fg-main);
+    }
+
+    .site-header,
+    .toc-card,
+    section,
+    header.assignment1-header,
+    .psi-card,
+    .psi-table-wrapper,
+    .a4 #summary {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: none;
+    }
+
+    .site-header p,
+    .toc-card strong,
+    .toc-card li a,
+    section p,
+    .section-note {
+      color: var(--fg-muted);
+    }
+
+    .toc-card li a {
+      background: #ffffff;
+      border-color: var(--border-subtle);
+    }
+
+    .psi-card,
+    .psi-card pre {
+      color: var(--fg-main);
+      background: #ffffff;
+      border-color: var(--border-subtle);
+    }
+
+    .psi-table-wrapper table,
+    .psi-table-wrapper th,
+    .psi-table-wrapper td,
+    .a2-table,
+    .a2-table th,
+    .a2-table td {
+      background: #ffffff;
+      color: #111111;
+      border: 1px solid #cccccc;
+    }
+
+    .psi-table-wrapper thead,
+    .a2-table thead th {
+      background: #f6f6f6;
+    }
+
+    .chart {
+      background: #ffffff;
+      border: 1px solid #cccccc;
+    }
+
+    .tooltip {
+      background: #ffffff;
+      color: #111111;
+      border: 1px solid #cccccc;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Hide the JSON loader UI; table loads automatically */
+    .psi-row,
+    #btnLoad,
+    #jsonPreview {
+      display: none;
+    }
+  </style>
+
+  <!-- Single D3 include for the whole page (used by A3 & A4) -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+  <div class="site-shell">
+    <!-- Top header + overview + directory -->
+    <header class="site-header">
+      <h1>IDV Assignment 5 – Integrated A1–A4</h1>
+      <p>
+        A single web page combining: A1 (API data table), A2 (SVG transformations),
+        A3 (interactive D3 charts), and A4 (grouped bar chart with robustness metrics).
+      </p>
+
+      <div class="toc-card">
+        <strong>Contents</strong>
+        <ul>
+          <li><a href="#overview">Overview &amp; integration notes</a></li>
+          <li><a href="#a1">Assignment 1 – PSI API Table</a></li>
+          <li><a href="#a2">Assignment 2 – SVG Transformations</a></li>
+          <li><a href="#a3">Assignment 3 – D3 Chart Collection</a></li>
+          <li><a href="#a4">Assignment 4 – Robustness Bar Chart</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main>
+      <!-- Overview section for Assignment 5 -->
+      <section id="overview">
+        <h2>Overview &amp; Integration Summary</h2>
+        <p>
+          This Assignment 5 page integrates my work from Assignments 1–4 into one unified
+          layout. Each assignment is presented in its own section with a consistent
+          card-style background, spacing, and typography, while keeping all original
+          functionality intact.
+        </p>
+        <p>
+          The main integration challenges were CSS and JavaScript conflicts. Each
+          assignment originally used its own HTML template, separate <code>&lt;body&gt;</code>
+          styles, and duplicated class names such as <code>.tooltip</code>. To avoid
+          conflicts, I merged the styles into a single stylesheet, removed extra
+          <code>body</code> rules, and reused a shared tooltip style across A3 and A4.
+          I also ensured that D3 is loaded only once at the top of the page.
+        </p>
+        <p>
+          The hardest part to integrate was Assignment 3 (the multi-chart D3 collection),
+          because it contains multiple SVGs, complex transitions, and interactions bound
+          to specific IDs. When moving it into this integrated file, I preserved all
+          container IDs (<code>#chart1</code>–<code>#chart5</code>) and kept the script
+          logic together at the bottom, so all selections and transitions still work
+          correctly in the new layout.
+        </p>
+      </section>
+
+      <!-- ================= Assignment 1 ================= -->
+      <section id="a1">
+        <h2>Assignment 1 – API-driven PSI Table</h2>
+        <p class="section-note">
+          This section reuses the Assignment 1 logic to fetch PSI readings from
+          data.gov.sg and display them in a table, together with a small JSON preview.
+        </p>
+
+        <!-- Assignment 1 header and layout, adapted into this section -->
+        <header class="assignment1-header">
+          <h3>Singapore PSI Readings</h3>
+          <p>API-driven PSI readings table using the data.gov.sg environment API.</p>
+        </header>
+
+        <div class="psi-main">
+          <div class="psi-row">
+            <article class="psi-card">
+              <h4>1. Load PSI data (API)</h4>
+              <p>Click to fetch today’s PSI readings JSON from data.gov.sg.</p>
+              <button id="btnLoad">Load PSI JSON</button>
+              <pre id="jsonPreview">// JSON preview will appear here after loading.</pre>
+            </article>
+
+            <article class="psi-card">
+              <h4>2. Table interpretation</h4>
+              <p>
+                The table lists PSI readings by region and pollutant band.
+                Values are extracted from the official API response.
+              </p>
+              <p>
+                The card layout and typography are kept similar to the original
+                Assignment 1, but wrapped into this unified dark theme.
+              </p>
+            </article>
+          </div>
+
+          <div class="psi-table-wrapper">
+            <table id="psiTable">
+              <thead></thead>
+              <tbody>
+                <!-- Filled dynamically by Assignment 1 script -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= Assignment 2 ================= -->
+      <section id="a2">
+        <h2>Assignment 2 – 10 SVGs × 5 Effects</h2>
+        <p class="section-note">
+          This section reuses the sprite-based SVG assignment: 10 base drawings,
+          each with five different transformations (mirror, rotate 180°, squeeze,
+          gray, and original).
+        </p>
+
+        <!-- Hidden sprite sheet from A2 -->
+        <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px">
+          <defs>
+            <!-- (Sprite symbols from Assignment 2) -->
+            <symbol id="svg-cat" viewBox="0 0 120 120">
+              <path class="c1" d="M60 25 L80 10 L78 32 Q95 45 95 63 Q95 85 76 96 Q60 105 45 100 Q25 92 22 73 Q18 50 38 36 L36 14 Z"/>
+              <path class="c4" d="M58 63 L62 63 L60 67 Z"/>
+              <path class="line" d="M40 63 L15 57 M42 70 L16 75 M80 64 L105 58 M78 72 L104 78"/>
+              <path d="M46 52 q5 -6 10 0 q-5 6 -10 0Z" fill="#fff"/>
+              <path d="M70 49 q6 -4 11 1 q-6 6 -11 -1Z" fill="#fff"/>
+            </symbol>
+            <symbol id="svg-dog" viewBox="0 0 120 120">
+              <path class="c2" d="M22 40 Q18 25 30 20 L45 25 L55 18 Q72 12 84 25 Q96 38 92 55 Q88 74 70 88 Q60 95 46 94 Q28 93 22 77 Q16 60 22 40 Z"/>
+              <path class="line" d="M28 44 Q35 36 44 43 M77 45 Q80 39 88 42"/>
+              <circle cx="43" cy="47" r="3" fill="#fff"/>
+              <circle cx="75" cy="47" r="3" fill="#fff"/>
+              <path class="c4" d="M50 64 Q60 72 70 64"/>
+            </symbol>
+            <symbol id="svg-ship" viewBox="0 0 120 120">
+      <path class="c3" d="M15 78 L105 78 L92 95 L28 95 Z"/>
+      <path class="c6" d="M58 78 L58 30 L90 50 L58 50 Z"/>
+      <path class="c4" d="M58 34 L75 28 L58 22 Z"/>
+      <path class="line" d="M20 95 Q40 102 60 95 Q85 88 100 98"/>
+    </symbol>
+    <symbol id="svg-flower" viewBox="0 0 120 120">
+      <path class="c4" d="M56 65 q8 -20 20 0 q-12 18 -20 0Z"/>
+      <path class="c3" d="M60 40 q-12 -10 0 -20 q12 6 8 18 Z"/>
+      <path class="c1" d="M82 52 q10 -8 20 4 q-8 12 -18 6 Z"/>
+      <path class="c2" d="M36 52 q-12 2 -18 14 q14 4 20 -6 Z"/>
+      <path class="c5" d="M62 88 q-6 10 -2 20 q10 -6 8 -18 Z"/>
+      <path class="line" d="M60 70 q-6 24 -6 42 M54 90 q-10 6 -16 18"/>
+    </symbol>
+    <symbol id="svg-house" viewBox="0 0 120 120">
+      <path class="c6" d="M20 60 L60 30 L100 60 L100 98 L20 98 Z"/>
+      <path class="c4" d="M34 98 L34 76 L50 76 L50 98 Z"/>
+      <path class="c3" d="M64 70 L90 70 L90 88 L64 88 Z"/>
+    </symbol>
+    <symbol id="svg-goat" viewBox="0 0 120 120">
+      <path class="c5" d="M25 70 q8 -22 30 -28 q24 -4 38 12 q12 14 5 30 q-6 12 -22 16 q-18 5 -34 -2 q-16 -7 -21 -20 Z"/>
+      <path class="line" d="M72 38 q8 -18 22 -10 M60 36 q-4 -14 10 -12 M44 78 L26 82"/>
+      <path d="M54 66 q5 -3 9 0 q-4 6 -9 0Z" fill="#fff"/>
+      <path class="c3" d="M68 78 q4 2 8 0 q-4 6 -8 0Z"/>
+    </symbol>
+    <symbol id="svg-moon" viewBox="0 0 120 120">
+      <path class="c4" fill-rule="evenodd" d="M76 18 A42 42 0 1 0 96 96 A28 28 0 1 1 76 18 Z"/>
+      <path class="c1" d="M90 34 l6 2 l-4 4 l2 6 l-6 -3 l-6 3 l2 -6 l-4 -4 l6 -2 l2 -6 Z"/>
+    </symbol>
+    <symbol id="svg-grass" viewBox="0 0 120 120">
+      <path class="c2" d="M15 98 q10 -20 6 -40 q14 18 10 40 Z"/>
+      <path class="c2" d="M40 98 q10 -28 2 -46 q16 18 14 46 Z"/>
+      <path class="c2" d="M65 98 q14 -24 12 -48 q18 20 12 48 Z"/>
+      <path class="c2" d="M90 98 q12 -22 4 -38 q14 12 8 38 Z"/>
+      <path class="c6" d="M10 98 L110 98 L110 104 L10 104 Z"/>
+    </symbol>
+    <symbol id="svg-cow" viewBox="0 0 120 120">
+      <path class="c4" d="M20 70 q8 -24 34 -28 q28 -4 44 12 q12 14 2 30 q-8 14 -26 18 q-22 4 -38 -6 q-18 -10 -16 -26 Z"/>
+      <path class="c3" d="M78 58 q16 8 10 22 q-14 -6 -10 -22 Z"/>
+      <path d="M46 64 q6 -3 10 0 q-6 6 -10 0Z" fill="#fff"/>
+      <path d="M62 63 q6 -3 10 1 q-6 6 -10 -1Z" fill="#fff"/>
+      <path class="line" d="M34 80 L18 84"/>
+    </symbol>
+    <symbol id="svg-fish" viewBox="0 0 120 120">
+      <path class="c6" d="M18 70 q20 -22 46 -22 q18 0 32 10 q8 6 8 12 q0 6 -8 12 q-14 10 -32 10 q-26 0 -46 -22 Z"/>
+      <path class="c3" d="M86 58 L108 48 L100 70 L108 92 L86 82 Z"/>
+      <path d="M56 58 q6 -3 8 3 q-6 4 -8 -3Z" fill="#fff"/>
+    </symbol>
+      <symbol id="svg-butterfly" viewBox="0 0 300 220">
+      <path d="M150 110 C 90 20, 10 40, 40 110 C 10 180, 90 200, 150 110 Z" fill="#4285F4" stroke="#4285F4" stroke-width="2"/>
+      <path d="M150 110 C 210 20, 290 40, 260 110 C 290 180, 210 200, 150 110 Z" fill="#34A853" stroke="#34A853" stroke-width="2"/>
+      <path d="M150 60 C 145 80, 145 140, 150 160 C 155 140, 155 80, 150 60 Z" fill="#EA4335"/>
+      <path d="M150 55 C 160 55, 160 45, 150 45 C 140 45, 140 55, 150 55 Z" fill="#FBBC05"/>
+    </symbol>
+          </defs>
+        </svg>
+
+        <!-- A2 table -->
+        <table class="a2-table">
+          <colgroup>
+            <col><col><col><col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Original</th>
+              <th>Mirrored</th>
+              <th>Rotated 180°</th>
+              <th>Vertically Squeezed 50%</th>
+              <th>Grayscale</th>
+            </tr>
+          </thead>
+          <tbody>
+      <!-- Cat -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-cat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-cat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-cat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-cat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-cat"/></svg></td>
+      </tr>
+      <!-- Butterfly -->
+      <tr>
+        <td><svg viewBox="0 0 300 220"><use href="#svg-butterfly"/></svg></td>
+        <td><svg viewBox="0 0 300 220" class="mirror"><use href="#svg-butterfly"/></svg></td>
+        <td><svg viewBox="0 0 300 220" class="rotate180"><use href="#svg-butterfly"/></svg></td>
+        <td><svg viewBox="0 0 300 220" class="squeeze"><use href="#svg-butterfly"/></svg></td>
+        <td><svg viewBox="0 0 300 220" class="gray"><use href="#svg-butterfly"/></svg></td>
+      </tr>
+      <!-- Ship -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-ship"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-ship"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-ship"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-ship"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-ship"/></svg></td>
+      </tr>
+      <!-- Flower -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-flower"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-flower"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-flower"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-flower"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-flower"/></svg></td>
+      </tr>
+      <!-- House -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-house"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-house"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-house"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-house"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-house"/></svg></td>
+      </tr>
+      <!-- Goat -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-goat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-goat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-goat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-goat"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-goat"/></svg></td>
+      </tr>
+      <!-- Moon -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-moon"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-moon"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-moon"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-moon"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-moon"/></svg></td>
+      </tr>
+      <!-- Grass -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-grass"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-grass"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-grass"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-grass"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-grass"/></svg></td>
+      </tr>
+      <!-- Dog -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-cow"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-cow"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-cow"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-cow"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-cow"/></svg></td>
+      </tr>
+      <!-- Fish -->
+      <tr>
+        <td><svg viewBox="0 0 120 120"><use href="#svg-fish"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="mirror"><use href="#svg-fish"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="rotate180"><use href="#svg-fish"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="squeeze"><use href="#svg-fish"/></svg></td>
+        <td><svg viewBox="0 0 120 120" class="gray"><use href="#svg-fish"/></svg></td>
+      </tr>
+    </tbody>
+        </table>
+      </section>
+
+      <!-- ================= Assignment 3 ================= -->
+      <section id="a3" class="a3">
+        <h2>Assignment 3 – D3 Chart Recreation Collection</h2>
+        <p class="section-note">
+          This section preserves the five D3 charts from Assignment 3:
+          parallelogram vectors, frequency area chart, Venn-like diagram,
+          bar chart, and Gaussian curves.
+        </p>
+
+        <h3>Chart 1 – Parallelogram Recreation</h3>
+        <figure>
+          <svg id="chart1" class="chart" width="900" height="300"></svg>
+          <figcaption>
+            <strong>Figure note.</strong> Parallelogram of vectors with arrowheads, gridlines,
+            transitions, and hover tooltips describing each vector.
+          </figcaption>
+        </figure>
+
+        <hr class="divider" />
+
+        <h3>Chart 2 – Frequency Chart Recreation</h3>
+        <figure>
+          <svg id="chart2" class="chart" width="900" height="300"></svg>
+          <figcaption>
+            <strong>Figure note.</strong> Layered area chart for “Vector” base and extra
+            frequencies, with linear interpolation and soft time gating.
+          </figcaption>
+        </figure>
+
+        <hr class="divider" />
+
+        <h3>Chart 3 – Venn-style Recreation</h3>
+        <figure>
+          <svg id="chart3" class="chart" width="900" height="300"></svg>
+          <figcaption>
+            <strong>Figure note.</strong> Overlapping circles with Roman numerals and
+            category labels positioned using helper functions.
+          </figcaption>
+        </figure>
+
+        <hr class="divider" />
+
+        <h3>Chart 4 – Bar Chart Recreation</h3>
+        <figure>
+          <svg id="chart4" class="chart" width="900" height="300"></svg>
+          <figcaption>
+            <strong>Figure note.</strong> Paired bars with solid yellow and dashed outlines,
+            animated growth, and a rectangular panel border.
+          </figcaption>
+        </figure>
+
+        <hr class="divider" />
+
+        <h3>Chart 5 – Gaussian Curve Recreation</h3>
+        <figure>
+          <svg id="chart5" class="chart" width="900" height="300"></svg>
+          <figcaption>
+            <strong>Figure note.</strong> Two Gaussian curves with shaded areas, dashed
+            vertical boundaries, gridlines, and a vertical y-axis label.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ================= Assignment 4 ================= -->
+      <section id="a4" class="a4">
+        <h2>Assignment 4 – Robustness Grouped Bar Chart</h2>
+        <p class="section-note">
+          This section reuses the interactive grouped bar chart from Assignment 4.
+          Buttons select metric (Standard, CRR, CRA) and dataset (CIFAR-100, CIFAR-10,
+          SVHN, MNIST); tooltips show exact values; the summary lists best and worst
+          methods per dataset.
+        </p>
+
+        <h3>Adversarial Training Results – Bar Chart with D3.js</h3>
+        <p>
+          Data option: groups of data (Standard Accuracy, Certified Robustness Rate,
+          Certified Robust Accuracy) across multiple datasets.
+        </p>
+
+        <div class="controls">
+          <span>Metric:</span>
+          <button class="metric-btn active" data-metric="standard">Standard Accuracy</button>
+          <button class="metric-btn" data-metric="crr">Certified Robustness Rate</button>
+          <button class="metric-btn" data-metric="cra">Certified Robust Accuracy</button>
+        </div>
+
+        <div class="controls">
+          <span>Dataset:</span>
+          <button class="dataset-btn active" data-dataset="CIFAR-100">CIFAR-100</button>
+          <button class="dataset-btn" data-dataset="CIFAR-10">CIFAR-10</button>
+          <button class="dataset-btn" data-dataset="SVHN">SVHN</button>
+          <button class="dataset-btn" data-dataset="MNIST">MNIST</button>
+        </div>
+
+        <svg id="chart" width="900" height="480"></svg>
+        <div id="tooltip" class="tooltip" style="opacity:0;"></div>
+
+        <div id="summary">
+          <h3>Best and worst methods for each dataset</h3>
+          <ul id="summary-list"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========== Scripts ========== -->
+
+  <!-- Assignment 1 script: PSI API fetch + table rendering -->
+  <script>
+    const PSI_API =
+      "https://api.data.gov.sg/v1/environment/psi?date=" +
+      new Date().toISOString().slice(0, 10);
+
+    const readingOrder = [
+      "o3_sub_index",
+      "pm10_twenty_four_hourly",
+      "pm10_sub_index",
+      "co_sub_index",
+      "pm25_sub_index",
+      "so2_sub_index",
+      "co_eight_hour_max",
+      "no2_one_hour_max",
+      "so2_twenty_four_hourly",
+      "pm25_twenty_four_hourly",
+      "psi_twenty_four_hourly",
+      "o3_eight_hour_max"
+    ];
+
+    const labelMap = {
+      o3_sub_index: "O\u2083 Sub Index",
+      pm10_twenty_four_hourly: "PM\u2081\u2080 (24-hr)",
+      pm10_sub_index: "PM\u2081\u2080 Sub Index",
+      co_sub_index: "CO Sub Index",
+      pm25_sub_index: "PM\u2082.\u2085 Sub Index",
+      so2_sub_index: "SO\u2082 Sub Index",
+      co_eight_hour_max: "CO (8-hr max)",
+      no2_one_hour_max: "NO\u2082 (1-hr max)",
+      so2_twenty_four_hourly: "SO\u2082 (24-hr)",
+      pm25_twenty_four_hourly: "PM\u2082.\u2085 (24-hr)",
+      psi_twenty_four_hourly: "PSI (24-hr)",
+      o3_eight_hour_max: "O\u2083 (8-hr max)"
+    };
+
+    const psiTableHead = document.querySelector("#psiTable thead");
+    const psiTableBody = document.querySelector("#psiTable tbody");
+
+    const formatVal = v =>
+      v === undefined || v === null || Number.isNaN(Number(v))
+        ? "—"
+        : Number(v).toFixed(1);
+
+    function renderTable(result) {
+      psiTableHead.innerHTML = "";
+      psiTableBody.innerHTML = "";
+      const items = result.items && result.items[0];
+      const regions =
+        (result.region_metadata || []).map(r => (r.name || "").toLowerCase()) ||
+        [];
+      if (!items || !items.readings || !regions.length) {
+        psiTableBody.innerHTML =
+          '<tr><td colspan="7">No PSI data available.</td></tr>';
+        return;
+      }
+
+      const headRow = document.createElement("tr");
+      const thReading = document.createElement("th");
+      thReading.textContent = "Reading";
+      headRow.appendChild(thReading);
+      regions.forEach(region => {
+        const th = document.createElement("th");
+        th.textContent = region;
+        headRow.appendChild(th);
+      });
+      psiTableHead.appendChild(headRow);
+
+      const readings = items.readings;
+      readingOrder.forEach(key => {
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        nameCell.textContent = labelMap[key] || key;
+        row.appendChild(nameCell);
+        regions.forEach(region => {
+          const td = document.createElement("td");
+          const val = readings[key]?.[region];
+          td.textContent = formatVal(val);
+          row.appendChild(td);
+        });
+        psiTableBody.appendChild(row);
+      });
+    }
+
+    async function loadPSI() {
+      psiTableBody.innerHTML =
+        '<tr><td colspan="7">Loading latest PSI readings…</td></tr>';
+      try {
+        const res = await fetch(PSI_API);
+        const data = await res.json();
+        renderTable(data);
+      } catch (err) {
+        psiTableBody.innerHTML =
+          '<tr><td colspan="7">Error loading PSI data: ' +
+          err.message +
+          "</td></tr>";
+      }
+    }
+
+    loadPSI();
+  </script>
+
+  <!-- Assignment 3 script: paste your existing A3 code here -->
+  <!--
+    IMPORTANT:
+    Copy the entire <script>...</script> block from your Assignment 3 index.html
+    (the one that defines drawChart1–drawChart5 and calls them) and paste it
+    inside this placeholder, replacing this comment. Do not change the IDs
+    (#chart1 – #chart5) so everything continues to work.
+  -->
+
+  <!-- Example placeholder (do NOT keep this stub if you paste the real code) -->
+  <script>
+// =================== Chart 1 Script ===================
+function drawChart1() {
+  const svg = d3.select("#chart1");
+  const W = +svg.attr("width"), H = +svg.attr("height");
+  svg.selectAll("*").remove();
+
+  const x = d3.scaleLinear().domain([0, 10]).range([30, W - 20]);
+  const y = d3.scaleLinear().domain([0, 6]).range([H - 25, 15]);
+
+  const gx = d3.range(0, 10.0001, 1);
+  const gy = d3.range(0, 6.0001, 1);
+
+  svg.append("g").selectAll("line").data(gx).enter().append("line")
+    .attr("x1", d => x(d)).attr("x2", d => x(d))
+    .attr("y1", y(0)).attr("y2", y(6))
+    .attr("stroke", "#9aa4").attr("stroke-width", 1);
+
+  svg.append("g").selectAll("line").data(gy).enter().append("line")
+    .attr("y1", d => y(d)).attr("y2", d => y(d))
+    .attr("x1", x(0)).attr("x2", x(10))
+    .attr("stroke", "#9aa4").attr("stroke-width", 1);
+
+  const defs = svg.append("defs");
+  defs.append("marker")
+    .attr("id", "arrow").attr("viewBox", "0 0 10 10")
+    .attr("refX", 9).attr("refY", 5).attr("markerWidth", 8).attr("markerHeight", 8)
+    .attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M 0 0 L 10 5 L 0 10 z");
+
+  const markerCache = new Map();
+  function markerFor(color) {
+    if (!markerCache.has(color)) {
+      const id = `arrow-${color.replace('#','')}`;
+      const m = defs.append("marker")
+        .attr("id", id)
+        .attr("viewBox", "0 0 10 10")
+        .attr("refX", 9).attr("refY", 5)
+        .attr("markerWidth", 8).attr("markerHeight", 8)
+        .attr("orient", "auto-start-reverse");
+      m.append("path").attr("d","M 0 0 L 10 5 L 0 10 z").attr("fill", color).attr("stroke", color);
+      markerCache.set(color, id);
+    }
+    return `url(#${markerCache.get(color)})`;
+  }
+
+  const P = {
+    ea1: [7, 5], ea2: [4, 5], eb1: [4, 3.0], eb2: [1, 3.0],
+  };
+
+  function arrow(from, to, {stroke, width, dash, arrow=true}) {
+    const path = svg.append("path")
+      .attr("d", d3.line()([[x(from[0]), y(from[1])],[x(to[0]), y(to[1])]]))
+      .attr("fill","none")
+      .attr("stroke", stroke)
+      .attr("stroke-width", width)
+      .attr("opacity", 0.95);
+
+    if (arrow) path.attr("marker-end", markerFor(stroke));
+
+    if (dash) {
+      path.attr("stroke-dasharray", dash)
+          .attr("opacity", 0)
+          .transition().duration(700).attr("opacity", 0.95);
+    } else {
+      const L = path.node().getTotalLength();
+      path.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L)
+          .transition().duration(900).ease(d3.easeCubicOut)
+          .attr("stroke-dashoffset", 0);
+    }
+    return path;
+  }
+
+  const v1 = arrow(P.eb1, P.ea1, {stroke:"#222", width:2, arrow:false});
+  const v2 = arrow(P.eb1, P.eb2, {stroke:"#222", width:2, arrow:false});
+  const v5 = arrow(P.eb2, P.ea2, {stroke:"#222", width:2, arrow:false});
+  const v6 = arrow(P.ea1, P.ea2, {stroke:"#222", width:2, arrow:false});
+
+  const v3 = arrow(P.ea1, P.eb2, {stroke:"#d73c2c", width:2, dash:"6,6"});
+  const v4 = arrow(P.ea2, P.eb1, {stroke:"#e88c2a", width:2, dash:"6,6"});
+
+  const pts = [
+    {id:"e^α₁", p:P.ea1}, {id:"e^α₂", p:P.ea2},
+    {id:"e^β₁", p:P.eb1}, {id:"e^β₂", p:P.eb2},
+  ];
+  svg.selectAll("circle.pt").data(pts).enter().append("circle")
+    .attr("class","pt").attr("cx", d=>x(d.p[0])).attr("cy", d=>y(d.p[1]))
+    .attr("r", 3.5).attr("fill","#0a0");
+
+  const label = svg.selectAll("text.lab").data(pts).enter().append("text")
+    .attr("class","lab").attr("x", d=>x(d.p[0])+6).attr("y", d=>y(d.p[1])-6)
+    .attr("font-style","italic").attr("font-size", 18).attr("fill","#222");
+
+  label.each(function(d){
+    const t = d3.select(this);
+    t.text("e");
+    t.append("tspan").text(d.id.includes("α") ? "α" : "β")
+      .attr("baseline-shift","super").attr("font-size", 14);
+    t.append("tspan").text(d.id.slice(-1))
+      .attr("baseline-shift","sub").attr("font-size", 16).attr("font-style","normal");
+  });
+
+  const vectors = [
+    {name:"line eβ₁–eα₁", path:v1},
+    {name:"line eβ₂–eα₂", path:v2},
+    {name:"line eα₁–eβ₂", path:v3},
+    {name:"line eα₂–eβ₁", path:v4},
+    {name:"line eβ₂–eα₂", path:v5},
+    {name:"line eα₁–eα₂", path:v6},
+  ];
+  const tip = d3.select("body").append("div").attr("class","tooltip").style("display","none");
+
+  vectors.forEach(v => {
+    v.path.on("mousemove", (ev) => {
+        d3.select(ev.currentTarget).attr("stroke-width", 3.4);
+        tip.style("display","block")
+           .style("left", (ev.pageX+10)+"px").style("top",(ev.pageY-18)+"px")
+           .text(v.name);
+      })
+      .on("mouseout", (ev) => {
+        const isDashed = d3.select(ev.currentTarget).attr("stroke-dasharray");
+        d3.select(ev.currentTarget).attr("stroke-width", isDashed ? 2 : 2.2);
+        tip.style("display","none");
+      });
+  });
+}
+
+// =================== Chart 2 Script ===================
+function drawChart2() {
+  const svg = d3.select("#chart2");
+  const W = +svg.attr("width"), H = +svg.attr("height");
+  svg.selectAll("*").remove();
+
+  const years = d3.range(1980, 2025, 1);
+  const x = d3.scaleLinear().domain([1980, 2025]).range([50, W-20]);
+  const y = d3.scaleLinear().domain([0, 10]).range([H-30, 20]);
+
+  svg.append("g")
+     .attr("transform", `translate(0,${H-30})`)
+     .call(d3.axisBottom(x)
+        .tickValues(d3.range(1980, 2025, 5))
+        .tickFormat(d3.format("d")));
+
+  const yAxisG = svg.append("g")
+     .attr("transform", `translate(50,0)`)
+     .call(d3.axisLeft(y).ticks(5));
+
+  yAxisG.append("text")
+    .attr("transform", `translate(-32, ${H/2}) rotate(-90)`) 
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .attr("font-size", 14)
+    .attr("fill", "#333")
+    .text("Frequency");
+
+  function seriesFromKeypoints(keys, years) {
+    const ys = [];
+    for (let i = 0; i < keys.length - 1; i++) {
+      const a = keys[i], b = keys[i+1];
+      for (let yy = a.year; yy <= b.year; yy++) {
+        const t = (yy - a.year) / (b.year - a.year);
+        ys.push({ year: yy, freq: a.value*(1 - t) + b.value*t });
+      }
+    }
+    const filled = new Map(ys.map(p => [p.year, p.freq]));
+    return years.map(y => ({year: y, freq: filled.get(y) ?? 0}));
+  }
+  function softGate(yval, a=1985, b=2022, ramp=2){
+    if (yval < a - ramp) return 0;
+    if (yval < a)        return (yval - (a - ramp)) / ramp;
+    if (yval <= b)       return 1;
+    if (yval <= b + ramp)return 1 - (yval - b) / ramp;
+    return 0;
+  }
+
+  const specs = [
+    { name: "Set model", color: "#76c7b7",
+      keys: [
+        {year:1985, value:0.0}, {year:1986, value:1.0}, {year:1987, value:0.0},
+        {year:2000, value:0.0}, {year:2001, value:1.0}, {year:2002, value:0.0},
+        {year:2004, value:2.0}, {year:2005, value:0.0},
+        {year:2010, value:0.0}
+      ]
+    },
+    { name: "Sequence model", color: "#d1a372",
+      keys: [
+        {year:1989, value:0.0}, {year:1990, value:1.0}, {year:1991, value:0.0},{year:1992, value:1.0}, {year:1993, value:0.0},
+        {year:1995, value:0.0}, {year:1996, value:1.0}, {year:1997, value:1.0},{year:1998, value:0.0},
+        {year:2003, value:0.0}, {year:2004, value:1.0}, {year:2005, value:0.0},
+        {year:2006, value:2.0}, {year:2007, value:0.0},
+        {year:2015, value:0.0}, {year:2016, value:1.0}, {year:2017, value:0.0},
+        {year:2018, value:1.0}, {year:2019, value:1.0},{year:2020, value:0.0}
+      ]
+    },
+    { name: "End-to-end", color: "#de709d",
+      keys: [
+        {year:1994, value:0.0}, {year:1995, value:1.0}, {year:1996, value:0.0},
+        {year:1997, value:1.0}, {year:1998, value:1.0},{year:1999, value:0.0},
+        {year:2002, value:0.0}, {year:2003, value:1.0},{year:2004, value:0.0},
+        {year:2006, value:0.0}, {year:2007, value:2.0},{year:2008, value:0.0},
+        {year:2010, value:0.0}, {year:2011, value:0.5},{year:2012, value:4.0},{year:2013, value:2.0},{year:2014, value:3.0},
+        {year:2015, value:4.0}, {year:2016, value:3.0},{year:2017, value:3.5},{year:2018, value:3.0},{year:2019, value:9.0},
+        {year:2020, value:2.0}, {year:2021, value:0.0}
+      ]
+    }
+  ];
+
+  const vectorBaseKeys = [
+    {year:1987, value:0.0}, {year:1988, value:1.0}, {year:1989, value:0.0},
+    {year:1998, value:0.0}, {year:1999, value:1.0}, {year:2000, value:0.0},
+    {year:2001, value:0.0}, {year:2003, value:2.0}, {year:2004, value:0.0},
+    {year:2005, value:0.0}, {year:2006, value:1.0},{year:2008, value:1.0},{year:2009, value:2.0},{year:2010, value:0.0},
+    {year:2011, value:0.0}, {year:2012, value:2.0},{year:2013, value:3.0},{year:2014, value:4.0},{year:2015, value:1.0},{year:2016, value:0.0}
+  ];
+  const vectorExtraPeakKeys = [
+    {year:2014, value:0.0},
+    {year:2015, value:1.0},
+    {year:2016, value:2.0},
+    {year:2017, value:4.0},
+    {year:2018, value:3.0},
+    {year:2019, value:0.0}
+  ];
+
+  let vectorBaseVals  = seriesFromKeypoints(vectorBaseKeys, years)
+                        .map(d => ({year:d.year, freq: d.freq * softGate(d.year,1985,2022,2)}));
+  let vectorExtraVals = seriesFromKeypoints(vectorExtraPeakKeys, years)
+                        .map(d => ({year:d.year, freq: d.freq * softGate(d.year,1985,2022,2)}));
+
+  const data = [
+    { name: "Set model",      color: "#76c7b7",
+      values: seriesFromKeypoints(specs[0].keys, years).map(d => ({year:d.year, freq:d.freq * softGate(d.year,1985,2022,2)})) },
+    { name: "Sequence model", color: "#d1a372",
+      values: seriesFromKeypoints(specs[1].keys, years).map(d => ({year:d.year, freq:d.freq * softGate(d.year,1985,2022,2)})) },
+
+    { name: "Vector",  color: "#9b8dc2", values: vectorBaseVals, _fillOpacity: 0.45, _stroke: "#6d63a8" },
+    { name: "Vector (extra)", color: "#7a6fb5", values: vectorExtraVals, _fillOpacity: 0.65, _stroke: "#4f468f" },
+
+    { name: "End-to-end",     color: "#0033A0",
+      values: seriesFromKeypoints(specs[2].keys, years).map(d => ({year:d.year, freq:d.freq * softGate(d.year,1985,2022,2)})) }
+  ];
+
+  const area = d3.area()
+    .x(d => x(d.year))
+    .y0(y(0))
+    .y1(d => y(d.freq))
+    .curve(d3.curveMonotoneX);
+
+  const tip = d3.select(".tooltip").empty()
+    ? d3.select("body").append("div").attr("class","tooltip").style("display","none")
+    : d3.select(".tooltip");
+
+  const groups = svg.selectAll(".layer").data(data).enter().append("g").attr("class","layer");
+
+  groups.append("path")
+    .attr("fill", d => d.color)
+    .attr("fill-opacity", d => d._fillOpacity ?? 0.6)
+    .attr("stroke", d => d._stroke ?? "none")
+    .attr("stroke-width", d => d._stroke ? 1.5 : 0)
+    .attr("d", d => area(d.values.map(v => ({year:v.year, freq:0}))))
+    .transition().duration(1200)
+    .attr("d", d => area(d.values));
+
+  groups.on("mousemove", (event, d) => {
+      groups.transition().duration(100).attr("opacity", g => g===d ? 1 : 0.3);
+      tip.style("display","block")
+         .style("left",(event.pageX+10)+"px").style("top",(event.pageY-20)+"px")
+         .text(d.name);
+    })
+    .on("mouseout", () => {
+      groups.transition().duration(200).attr("opacity", 1);
+      tip.style("display","none");
+    });
+
+  const legendData = data.filter(d => !d.name.includes("Vector (extra)"));
+  const legend = svg.append("g").attr("transform", `translate(${W-200},28)`);
+
+  legend.selectAll("rect").data(legendData).enter().append("rect")
+    .attr("x",0).attr("y",(d,i)=>i*22).attr("width",15).attr("height",15)
+    .attr("fill",d=>d.color).attr("fill-opacity",d=>d._fillOpacity ?? 0.6)
+    .attr("stroke", d => d._stroke ?? "none").attr("stroke-width", d => d._stroke ? 1.5 : 0);
+
+  legend.selectAll("text").data(legendData).enter().append("text")
+    .attr("x",20).attr("y",(d,i)=>i*22+12).attr("font-size",13).text(d=>d.name);
+}
+
+// =================== Chart 3 Script ===================
+function drawChart3() {
+  const svg = d3.select("#chart3");
+  const W = +svg.attr("width"), H = +svg.attr("height");
+  svg.selectAll("*").remove();
+
+  const sets = [
+    { id:"Delete",  cx:290, cy:200, r:100, color:"#1f77b4", titleX:150, titleY:200 },
+    { id:"Replace", cx:360, cy:100, r:100, color:"#b69aa3", titleX:240, titleY: 28 },
+    { id:"Rewrite", cx:420, cy:200, r:100, color:"#e7cf7b", titleX:560, titleY:200 },
+  ];
+
+  const g = svg.append("g");
+
+  g.selectAll("text.title").data(sets).enter().append("text")
+    .attr("class","title")
+    .attr("x", d => d.titleX ?? d.cx)
+    .attr("y", d => d.titleY ?? (d.cy - d.r - 18))
+    .attr("text-anchor","middle")
+    .attr("font-size",18)
+    .text(d => d.id);
+
+  const tip = d3.select("body").append("div")
+    .attr("class","tooltip").style("display","none");
+
+  g.selectAll("circle.set").data(sets).enter().append("circle")
+    .attr("class","set")
+    .attr("cx", d => d.cx).attr("cy", d => d.cy)
+    .attr("r", 0)
+    .attr("fill", d => d.color)
+    .attr("fill-opacity", 0.55)
+    .attr("stroke", "#000").attr("stroke-opacity", 0.25)
+    .transition().duration(900)
+    .attr("r", d => d.r);
+
+  g.selectAll("circle.set")
+    .on("mousemove", (ev, d) => {
+      g.selectAll("circle.set").attr("opacity", s => (s===d ? 1 : 0.25));
+      tip.style("display","block")
+         .style("left",(ev.pageX+10)+"px").style("top",(ev.pageY-20)+"px")
+         .text(d.id);
+    })
+    .on("mouseout", () => {
+      g.selectAll("circle.set").attr("opacity", 1);
+      tip.style("display","none");
+    });
+
+  const add = (p, dx=0, dy=0) => [p[0] + dx, p[1] + dy];
+  const C = Object.fromEntries(sets.map(s => [s.id, [s.cx, s.cy]]));
+  const mid = (a,b,t=0.5)=>[a[0]*(1-t)+b[0]*t, a[1]*(1-t)+b[1]*t];
+
+  const labels = [
+    {txt:"I",   pos:[C.Delete[0]-70,  C.Delete[1]+40]},
+    {txt:"II",  pos:[C.Replace[0],    C.Replace[1]-30]},
+    {txt:"III", pos:[C.Rewrite[0]+60, C.Rewrite[1]+20]},
+    {txt:"IV",  pos:add(mid(C.Delete,  C.Replace, 0.50),-12,0)},
+    {txt:"V",   pos:add(mid(C.Replace, C.Rewrite, 0.50),+10,0)},
+    {txt:"VI",  pos:add(mid(C.Delete,  C.Rewrite, 0.50),0,+40)},
+    {txt:"VII", pos: [(C.Delete[0]+C.Replace[0]+C.Rewrite[0])/3,
+                      (C.Delete[1]+C.Replace[1]+C.Rewrite[1])/3]},
+  ];
+
+  g.selectAll("text.region").data(labels).enter().append("text")
+    .attr("class","region")
+    .attr("x", d=>d.pos[0]).attr("y", d=>d.pos[1])
+    .attr("font-size",22).attr("font-weight","600")
+    .attr("text-anchor","middle")
+    .text(d=>d.txt);
+}
+
+// =================== Chart 4 Script ===================
+function drawChart4() {
+  const svg = d3.select("#chart4");
+  const W = +svg.attr("width"), H = +svg.attr("height");
+  svg.selectAll("*").remove();
+
+  const data = [
+    { model: "BERT", acc1: 74.4, acc2: 64.8 },
+    { model: "RoBERTa", acc1: 81.9, acc2: 65.5 },
+    { model: "BART", acc1: 73.1, acc2: 63.5 },
+  ];
+
+  const margin = {top: 50, right: 30, bottom: 40, left: 40};
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const x0 = d3.scaleBand().domain(data.map(d => d.model)).range([0, innerW]).padding(0.25);
+  const x1 = d3.scaleBand().domain(["acc1", "acc2"]).range([0, x0.bandwidth()]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, 100]).range([innerH, 0]);
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  g.append("g").attr("transform", `translate(0,${innerH})`)
+    .call(d3.axisBottom(x0).tickSize(0)).selectAll("text").attr("font-size",13);
+  g.append("g").call(d3.axisLeft(y).ticks(5));
+
+  svg.append("text")
+    .attr("x", W/2).attr("y", 65)
+    .attr("text-anchor","middle").attr("font-size",12).attr("font-weight","600")
+    .text("Cross Validation Accuracy (%)");
+
+  const tooltip = d3.select("body").append("div").attr("class","tooltip").style("display","none");
+
+  const bars = g.selectAll("g.barGroup").data(data).enter().append("g")
+    .attr("class","barGroup").attr("transform", d => `translate(${x0(d.model)},0)`);
+
+  bars.append("rect")
+    .attr("x", d => x1("acc1"))
+    .attr("y", innerH)
+    .attr("width", x1.bandwidth())
+    .attr("height", 0)
+    .attr("fill", "#1f77b4")
+    .attr("stroke", "#555")
+    .transition().duration(900)
+    .attr("y", d => y(d.acc1))
+    .attr("height", d => innerH - y(d.acc1));
+
+  bars.append("rect")
+    .attr("x", d => x1("acc2"))
+    .attr("y", innerH)
+    .attr("width", x1.bandwidth())
+    .attr("height", 0)
+    .attr("fill", "none")
+    .attr("stroke", "#caa94a")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "6,4")
+    .transition().duration(1000)
+    .attr("y", d => y(d.acc2))
+    .attr("height", d => innerH - y(d.acc2));
+
+  bars.selectAll("text.val").data(d => [
+    {x:"acc1", val:d.acc1}, {x:"acc2", val:d.acc2}
+  ]).enter().append("text")
+    .attr("class","val")
+    .attr("x", d => x1(d.x) + x1.bandwidth()/2)
+    .attr("y", innerH)
+    .attr("text-anchor","middle")
+    .attr("font-size",12)
+    .attr("fill","#333")
+    .transition().delay(900).duration(300)
+    .attr("y", d => y(d.val) - 4)
+    .text(d => d.val.toFixed(1));
+
+  g.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", innerW)
+    .attr("height", innerH)
+    .attr("fill", "none")
+    .attr("stroke", "#b69aa3")
+    .attr("stroke-width", 1)
+    .attr("vector-effect", "non-scaling-stroke");
+  g.selectAll(".domain").attr("stroke", "none");
+
+  bars.on("mousemove", (ev, d) => {
+      tooltip.style("display","block")
+             .style("left",(ev.pageX+10)+"px")
+             .style("top",(ev.pageY-18)+"px")
+             .text(`${d.model}: ${d.acc1.toFixed(1)} / ${d.acc2.toFixed(1)}`);
+      d3.select(ev.currentTarget).selectAll("rect")
+        .attr("stroke-width",3);
+    })
+    .on("mouseout", (ev) => {
+      tooltip.style("display","none");
+      d3.select(ev.currentTarget).selectAll("rect")
+        .attr("stroke-width",2);
+    });
+}
+
+// =================== Chart 5 Script ===================
+function drawChart5() {
+  const svg = d3.select("#chart5");
+  const W = +svg.attr("width"), H = +svg.attr("height");
+  svg.selectAll("*").remove();
+
+  const CFG = {
+    mu0: 0.6,  sigma0: 0.6,
+    mu1: 2.0,  sigma1: 0.7,
+    targetPeak0: 0.25,
+    targetPeak1: 0.30,
+    color0: "#e6b74f",
+    color1: "#8B4513",
+    label0: "p(x, y = 0) · ν(x)",
+    label1: "p(x, y = 1) · ν(x)",
+    yLabel: "Probability Density",
+    xStartBrown: -0.5,
+    dashA: 1.1,
+    dashB: 1.7,
+    lightFill: 0.35,
+    darkFill: 0.6,
+    xDomain: [-2, 5],
+    yMax: 0.35
+  };
+
+  const margin = {top: 40, right: 20, bottom: 42, left: 56};
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const TWO_PI = 2*Math.PI;
+  const basePdf = (mu, sigma) => x =>
+    (1/(sigma*Math.sqrt(TWO_PI))) * Math.exp(-0.5 * ((x-mu)/sigma)**2);
+
+  const amp0 = (CFG.targetPeak0 ?? 1) * CFG.sigma0 * Math.sqrt(TWO_PI);
+  const amp1 = (CFG.targetPeak1 ?? 1) * CFG.sigma1 * Math.sqrt(TWO_PI);
+  const p0 = x => amp0 * basePdf(CFG.mu0, CFG.sigma0)(x);
+  const p1 = x => amp1 * basePdf(CFG.mu1, CFG.sigma1)(x);
+
+  const xs = d3.range(CFG.xDomain[0], CFG.xDomain[1] + 1e-6, 0.01);
+  const curve0 = xs.map(t => ({x:t, y:p0(t)}));
+  const curve1 = xs.map(t => ({x:t, y:p1(t)}));
+
+  const yMax = CFG.yMax ?? 1.15 * Math.max(
+    d3.max(curve0, d => d.y),
+    d3.max(curve1, d => d.y)
+  );
+
+  const x = d3.scaleLinear().domain(CFG.xDomain).range([0, innerW]);
+  const y = d3.scaleLinear().domain([0, yMax]).range([innerH, 0]);
+
+  g.append("g").attr("class","x grid")
+    .attr("transform", `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(10).tickSize(-innerH).tickFormat(""))
+    .selectAll("line").attr("stroke","#ddd");
+  g.append("g").attr("class","y grid")
+    .call(d3.axisLeft(y).ticks(7).tickSize(-innerW).tickFormat(""))
+    .selectAll("line").attr("stroke","#ddd");
+
+  g.append("g").attr("transform", `translate(0,${innerH})`).call(d3.axisBottom(x));
+  g.append("g").call(d3.axisLeft(y));
+  svg.append("text").attr("x", W/2).attr("y", H-6).attr("text-anchor","middle").text("x");
+  svg.append("text")
+    .attr("transform", `translate(${margin.left - 45}, ${H/2}) rotate(-90)`)
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .attr("font-size", 10)
+    .text(CFG.yLabel);
+
+  g.append("rect").attr("x",0).attr("y",0).attr("width",innerW).attr("height",innerH)
+    .attr("fill","none").attr("stroke","#555").attr("stroke-width",1.2);
+
+  const tooltip = d3.select("body").append("div").attr("class","tooltip").style("display","none");
+
+  const area = d3.area().x(d => x(d.x)).y0(y(0)).y1(d => y(d.y)).curve(d3.curveMonotoneX);
+  const line = d3.line().x(d => x(d.x)).y(d => y(d.y)).curve(d3.curveMonotoneX);
+
+  const xRight = Math.min(2.5, CFG.xDomain[1]);
+  const yellowRight = xs.filter(t => t >= CFG.dashB && t <= xRight).map(t => ({x:t, y:p0(t)}));
+  const brownLeft   = xs.filter(t => t >= CFG.xStartBrown && t <= CFG.dashA).map(t => ({x:t, y:p1(t)}));
+  const yellowMid   = xs.filter(t => t >= CFG.dashA && t <= CFG.dashB).map(t => ({x:t, y:p0(t)}));
+  const brownMid    = xs.filter(t => t >= CFG.dashA && t <= CFG.dashB).map(t => ({x:t, y:p1(t)}));
+
+  function trapz(data){
+    if (!data || data.length < 2) return 0;
+    let s = 0;
+    for (let i = 1; i < data.length; i++) {
+      const dx = data[i].x - data[i-1].x;
+      s += 0.5 * (data[i-1].y + data[i].y) * dx;
+    }
+    return s;
+  }
+  const A_brownLeft   = trapz(brownLeft);
+  const A_yellowMid   = trapz(yellowMid);
+  const A_brownMid    = trapz(brownMid);
+  const A_yellowRight = trapz(yellowRight);
+
+  const regions = [
+    {key: "brownLeft",  data: brownLeft,  fill: "#aaa", opacity: CFG.lightFill, label: "Brown curve: xStart→dashA",  A: A_brownLeft},
+    {key: "yellowMid",  data: yellowMid,  fill: "#666", opacity: CFG.darkFill,  label: "Yellow curve: dashA→dashB",  A: A_yellowMid},
+    {key: "brownMid",   data: brownMid,   fill: "#666", opacity: CFG.darkFill,  label: "Brown curve: dashA→dashB",   A: A_brownMid},
+    {key: "yellowRight",data: yellowRight,fill: "#aaa", opacity: CFG.lightFill, label: "Yellow curve: dashB→2.5",    A: A_yellowRight},
+  ];
+
+  g.selectAll("path.region")
+    .data(regions)
+    .enter()
+    .append("path")
+    .attr("class","region")
+    .attr("d", d => area(d.data))
+    .attr("fill", d => d.fill)
+    .attr("fill-opacity", d => d.opacity)
+    .style("cursor","crosshair")
+    .on("mousemove", (event, d) => {
+      d3.select(event.currentTarget).attr("fill-opacity", Math.min(1, d.opacity + 0.25));
+      tooltip.style("display","block")
+        .style("left", (event.pageX + 12) + "px")
+        .style("top",  (event.pageY - 18) + "px")
+        .text(`${d.label} · Area = ${d.A.toFixed(3)}`);
+    })
+    .on("mouseout", (event, d) => {
+      d3.select(event.currentTarget).attr("fill-opacity", d.opacity);
+      tooltip.style("display","none");
+    });
+
+  ["dashA","dashB"].forEach(k=>{
+    g.append("line")
+      .attr("x1", x(CFG[k])).attr("x2", x(CFG[k]))
+      .attr("y1", y(0)).attr("y2", y(yMax))
+      .attr("stroke","#333").attr("stroke-width",1.5)
+      .attr("stroke-dasharray","6,6").attr("opacity",0.8);
+  });
+
+  g.append("path").attr("d", line(curve0)).attr("fill","none").attr("stroke", CFG.color0).attr("stroke-width", 2.5);
+  g.append("path").attr("d", line(curve1)).attr("fill","none").attr("stroke", CFG.color1).attr("stroke-width", 2.5);
+
+  const legendItems = [
+    {color: CFG.color0, yval: 0, areaText: `A1=${A_yellowMid.toFixed(3)}, A2=${A_yellowRight.toFixed(3)}`},
+    {color: CFG.color1, yval: 1, areaText: `A1=${A_brownLeft.toFixed(3)}, A2=${A_brownMid.toFixed(3)}`},
+  ];
+
+  const legend = svg.append("g").attr("transform", `translate(${W-260},${margin.top-1})`);
+
+  const rows = legend.selectAll("g.row")
+    .data(legendItems)
+    .enter()
+    .append("g")
+    .attr("class","row")
+    .attr("transform", (d,i)=>`translate(0,${i*24})`);
+
+  rows.append("line")
+    .attr("x1",0).attr("x2",24).attr("y1",12).attr("y2",12)
+    .attr("stroke", d=>d.color).attr("stroke-width",3);
+
+  rows.each(function(d){
+    const t = d3.select(this).append("text")
+      .attr("x", 30).attr("y", 16);
+    t.append("tspan").attr("font-style","italic").text("p(x, ");
+    t.append("tspan").attr("font-style","italic").attr("font-weight","bold").text("y");
+    t.append("tspan").attr("font-style","italic").text(` = ${d.yval}) · ν(x)`);
+  });
+
+  const tooltip2 = tooltip; // reuse
+  rows.on("mousemove", (event, d) => {
+      tooltip2.style("display","block")
+        .style("left",(event.pageX+12)+"px")
+        .style("top",(event.pageY-18)+"px")
+        .text(`Areas — ${d.areaText}`);
+    })
+    .on("mouseout", () => tooltip2.style("display","none"));
+}
+
+// ===== Call all charts on load =====
+drawChart1();
+drawChart2();
+drawChart3();
+drawChart4();
+drawChart5();
+</script>
+
+  <!-- Assignment 4 script: paste your existing A4 D3 code here -->
+  <!--
+    IMPORTANT:
+    Copy the entire <script>...</script> block from your Assignment 4 index.html
+    (the one that builds the grouped bar chart, attaches the metric/dataset
+    button handlers, updates the tooltip, and fills #summary-list) and paste it
+    here, replacing this comment.
+  -->
+
+  <!-- Example placeholder (do NOT keep this stub if you paste the real code) -->
+  <script>
+// ---------------- Metric / dataset config -----------------
+const metricConfig = {
+  standard: {
+    key: "standard",
+    label: "Standard Accuracy (%)"
+  },
+  crr: {
+    key: "crr",
+    label: "Certified Robustness Rate (%)"
+  },
+  cra: {
+    key: "cra",
+    label: "Certified Robust Accuracy (%)"
+  }
+};
+
+const datasets = ["CIFAR-100", "CIFAR-10", "SVHN", "MNIST"];
+
+let currentMetric = "standard";
+let currentDataset = "MNIST";   // 你现在默认选的是 MNIST，就沿用
+
+// ---------------- Load JSON data -----------------
+d3.json("data_1.json").then(initChart);
+
+function initChart(data) {
+  const svg = d3.select("#chart");
+  const width  = +svg.attr("width");
+  const height = +svg.attr("height");
+
+  const margin = { top: 40, right: 30, bottom: 70, left: 70 };
+  const innerWidth  = width  - margin.left - margin.right;
+  const innerHeight = height - margin.top  - margin.bottom;
+
+  const g = svg.append("g")
+               .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const approaches = data.map(d => d.approach);
+
+  // 同一种方法使用同样的颜色
+  const color = d3.scaleOrdinal()
+      .domain(approaches)
+      .range(d3.schemeTableau10.concat(d3.schemeSet3)); // 足够颜色
+
+  const x = d3.scaleBand()
+      .domain(approaches)
+      .range([0, innerWidth])
+      .padding(0.2);
+
+  const y = d3.scaleLinear()
+      .range([innerHeight, 0]);
+
+  // x 轴
+  g.append("g")
+    .attr("transform", `translate(0,${innerHeight})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+      .attr("transform", "rotate(-35)")
+      .style("text-anchor", "end");
+
+  // y 轴 group
+  const yAxisG = g.append("g").attr("class", "y-axis");
+
+  // y 轴标题
+  const yLabel = g.append("text")
+      .attr("x", -innerHeight / 2)
+      .attr("y", -48)
+      .attr("transform", "rotate(-90)")
+      .attr("text-anchor", "middle")
+      .style("font-size", 13)
+      .text(metricConfig[currentMetric].label + " – " + currentDataset);
+
+  const tooltip = d3.select("#tooltip");
+
+  // 每根柱子直接绑定整行数据 row
+  const bars = g.selectAll("rect.bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", d => x(d.approach))
+      .attr("width", x.bandwidth())
+      .attr("y", innerHeight)   // 先从 0 高度开始
+      .attr("height", 0)
+      .attr("fill", d => color(d.approach))
+      .on("mousemove", (event, d) => {
+        const val = d[metricConfig[currentMetric].key][currentDataset];
+        tooltip.style("opacity", 1)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top",  (event.pageY + 10) + "px")
+          .html(`<b>${d.approach}</b><br/>
+                 Metric: ${metricConfig[currentMetric].label}<br/>
+                 Dataset: ${currentDataset}<br/>
+                 Value: ${val.toFixed(2)}`);
+      })
+      .on("mouseleave", () => tooltip.style("opacity", 0));
+
+  // 更新 y 轴 + 柱子高度
+  function updateChart(animate = true) {
+    const metricKey = metricConfig[currentMetric].key;
+
+    const values = data.map(d => d[metricKey][currentDataset]);
+    const maxVal = d3.max(values);
+
+    y.domain([0, maxVal]).nice();
+
+    const t = animate ? svg.transition().duration(800) : svg;
+
+    yAxisG.transition(t).call(d3.axisLeft(y));
+
+    yLabel.text(metricConfig[currentMetric].label + " – " + currentDataset);
+
+    bars.transition(t)
+        .attr("x", d => x(d.approach))
+        .attr("width", x.bandwidth())
+        .attr("y", d => y(d[metricKey][currentDataset]))
+        .attr("height", d => innerHeight - y(d[metricKey][currentDataset]))
+        .attr("fill", d => color(d.approach));
+  }
+
+  // 更新 summary：每个数据集的最佳 / 最差方法
+  function updateSummary() {
+    const metricKey = metricConfig[currentMetric].key;
+    const ul = d3.select("#summary-list");
+    ul.selectAll("li").remove();
+
+    datasets.forEach(ds => {
+      let best = null, worst = null;
+
+      data.forEach(row => {
+        const val = row[metricKey][ds];
+        if (best === null || val > best.value) best = { method: row.approach, value: val };
+        if (worst === null || val < worst.value) worst = { method: row.approach, value: val };
+      });
+
+      ul.append("li")
+        .text(`${ds}: best = ${best.method} (${best.value.toFixed(2)}), `
+            + `worst = ${worst.method} (${worst.value.toFixed(2)})`);
+    });
+  }
+
+  // 初次绘制（带进入动画）
+  updateChart(true);
+  updateSummary();
+
+  // --------- 绑定按钮交互 ---------
+  d3.selectAll("button.metric-btn").on("click", function() {
+    const m = this.getAttribute("data-metric");
+    currentMetric = m;
+
+    d3.selectAll("button.metric-btn").classed("active", false);
+    d3.select(this).classed("active", true);
+
+    updateChart(true);      // 有 transition
+    updateSummary();        // 文本统计跟着变
+  });
+
+  d3.selectAll("button.dataset-btn").on("click", function() {
+    const ds = this.getAttribute("data-dataset");
+    currentDataset = ds;
+
+    d3.selectAll("button.dataset-btn").classed("active", false);
+    d3.select(this).classed("active", true);
+
+    updateChart(true);
+    // summary 一次显示四个数据集，不需要跟 dataset 按钮一起变
+  });
+}
+</script>
+</body>
+</html>
